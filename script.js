@@ -1,34 +1,6 @@
 'use strict';
 
 {
-  const product = 'Aser Aspire 3';
-  const quantityProduct = 10;
-  const category = 'laptop';
-  const price = 35000;
-
-
-  //  Вывод в консоль названия продукта и общей стоимости товаров
-  console.log('Наименование товара:  ', product);
-  console.log(`Общая сумма товаров: ${quantityProduct * price}`);
-}
-
-console.log('');
-
-{
-  const product = 'Hyundai CC3595FIX';
-  const quantityProduct = 13;
-  const category = 'fridge';
-  const price = 40570;
-
-
-  //  Вывод в консоль названия продукта и общей стоимости товаров
-  console.log('Наименование товара: ', product);
-  console.log(`Общая сумма товаров: ${quantityProduct * price}`);
-}
-
-console.log('');
-
-{
   let flag = true;
   switch (true) {
     case true:

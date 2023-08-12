@@ -1,38 +1,39 @@
 'use strict';
 
 {
-    const smallTax = [0.13, 15000];
-    const middleTax = [0.2, 50000];
-    const bigTax = 0.3;
-
-    let income = prompt('Введите свой доход: ');
-    if (income !== '' && !isNaN(income)) {
-        income = +income;
-        if (0 < income && income <= smallTax[1]) {
-            console.log(`Налог, который необходимо оплатить: ${income * smallTax[0]} ₽`);
-        } else if (smallTax[1] < income && income <= middleTax[1]) {
-            const secondIncome = income - smallTax[1];
-            const firstTax = smallTax[1] * smallTax[0];
-            const secondTax = secondIncome * middleTax[0];
-
-            console.log(`Налоги, который необходимо оплатить:`);
-            console.log(`Налоговая ставка 13%: ${firstTax} ₽`);
-            console.log(`Налоговая ставка 20%: ${secondTax} ₽`);
-        } else if (income > middleTax[1]) {
-            const secondIncome = middleTax[1] - smallTax[1];
-            const lastIncome = income - middleTax[1];
-            const firstTax = smallTax[1] * smallTax[0];
-            const secondTax = secondIncome * middleTax[0];
-            const lastTax = lastIncome * bigTax;
-
-            console.log(`Налог, который необходимо оплатить:`);
-            console.log(`Налоговая ставка 13%: ${firstTax} ₽`);
-            console.log(`Налоговая ставка 20%: ${secondTax} ₽`);
-            console.log(`Налоговая ставка 30%: ${lastTax} ₽`);
-        } else {
-            console.log('Доход не может быть отрицательным или меньше 0');
+    const data = {
+        tax: {
+            smallTax: 0.13,
+            middleTax: 0.2,
+            bigTax: 0.3,
+        },
+        limit: {
+            lowLimit: 15000,
+            heightLimit: 50000,
         }
+    }
+
+    let userTax = 0;
+
+    let remainder = prompt('Введите свой доход: ');
+
+    if (remainder <= 0) {
+        console.log(`Налог, который необходимо оплатить: 0 ₽`);
     } else {
-        console.log(`Вы ввели некорректные данные`);
+        if (remainder > data.limit.heightLimit) {
+            userTax = (remainder - data.limit.heightLimit) * data.tax.bigTax;
+            remainder = data.limit.heightLimit;
+        }
+
+        if (remainder > data.limit.lowLimit) {
+            userTax += (remainder - data.limit.lowLimit) * data.tax.middleTax;
+            remainder = data.limit.lowLimit;
+        }
+
+        if (remainder <= data.limit.lowLimit) {
+            userTax += remainder * data.tax.smallTax;
+        }
+
+        console.log(`Налог, который необходимо оплатить: ${userTax} ₽`);
     }
 }
