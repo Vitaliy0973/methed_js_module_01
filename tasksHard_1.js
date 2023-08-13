@@ -9,14 +9,18 @@
 
   let income = prompt('Введите свой доход: ');
 
-  if (income >= lowLimit) {
+  if (income > 0) {
+
+    if (income < lowLimit) {
+      console.log(`Налог, который необходимо оплатить: ${income * smallTax} ₽`);
+    }
+
     if (income >= heightLimit) {
       console.log(`Налог, который необходимо оплатить: ${income * bigTax} ₽`);
     } else {
       console.log(`Налог, который необходимо оплатить: ${income * middleTax} ₽`);
     }
-  } else if (income > 0) {
-    console.log(`Налог, который необходимо оплатить: ${income * smallTax} ₽`);
+
   } else {
     console.log(`Налог, который необходимо оплатить: 0 ₽`);
   }
