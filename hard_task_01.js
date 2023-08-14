@@ -1,7 +1,7 @@
 'use strict';
 
-const divisorSearch = (num_1, num_2) => {
-    return ((num_1 % num_2) === 0) ? num_2 : divisorSearch(num_1, (num_2 - 1));
+const divisorSearch = (x, y, i = y) => {
+    return ((x % i + y % i) === 0) ? i : divisorSearch(x, y, (i - 1));
 }
 
 console.log(divisorSearch(60, 93));
