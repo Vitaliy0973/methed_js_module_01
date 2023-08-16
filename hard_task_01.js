@@ -1,17 +1,6 @@
 'use strict';
 
 {
-    const getAveragePriceGoods = (arr) => {
-        let sum = 0;
-        let products = 0
-
-        for (const elem of arr) {
-            products += elem[0]
-            sum += elem[1]
-        }
-        return Math.round((sum / products) * 100) / 100;
-    }
-
     const allСashbox = [
         [12, 4500],
         [7, 3210],
@@ -22,6 +11,15 @@
         [6, 13900],
         [1, 370],
     ];
+
+    const getAveragePriceGoods = (arr) => {
+
+        const [totalCount, totalSum] = arr.reduce(([firstCount, firstSum], [count, sum]) => {
+            return [firstCount + count, firstSum + sum];
+        }, [0, 0]);
+
+        return Math.round((totalSum / totalCount) * 100) / 100;
+    }
 
     console.log(getAveragePriceGoods(allСashbox));
 }

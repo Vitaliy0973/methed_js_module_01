@@ -2,13 +2,7 @@
 
 {
     const addPrefix = (arr, str) => {
-        const result = [];
-
-        for (const elem of arr) {
-            result.push(`${str} ${elem}`);
-        }
-
-        return result;
+        return arr.map((elem) => `${str} ${elem}`);
     }
 
     const names = ['Noah', 'Liam', 'Mason', 'Jacob', 'Robot', 'William', 'Ethan', 'Michael', 'Alexander'];
