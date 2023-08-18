@@ -1,43 +1,28 @@
 'use strict';
 
 {
-  const getEvenList = (min, max, count) => {
-    const arr = Array.from({ length: count }, (item) => {
-      do {
-        item = Math.floor(Math.random() * (max - min + 1)) + min;
-      } while (item % 2);
+  const createRandomList = (count, n, m, parity = '') => {
+    const min = Math.min(n, m);
+    const max = Math.max(n, m);
+
+    const arr = Array.from({ length: count }, (item, index) => {
+      item = Math.floor(Math.random() * (max - min)) + min;
+      switch (parity) {
+        case 'even':
+          !(item % 2) ? item : item++;
+          break;
+        case 'odd':
+          item % 2 ? item : item++;
+      }
       return item;
     });
-    return arr;
-  }
-
-  const getOddList = (min, max, count) => {
-    const arr = Array.from({ length: count }, (item) => {
-      do {
-        item = Math.floor(Math.random() * (max - min + 1)) + min;
-      } while (!(item % 2));
-      return item;
-    });
-    return arr;
-  }
-
-  const createRandomList = (n, m, count, parity) => {
-    let arr;
-    const min = n < m ? n : m;
-    const max = n > m ? n : m;
-
-    if (parity === 'even') {
-      arr = getEvenList(min, max, count);
-    }
-
-    if (parity === 'odd') {
-      arr = getOddList(min, max, count);
-    }
 
     return arr;
   }
 
-  console.log(createRandomList(1, 20, 10, 'even'));
-  console.log(createRandomList(25, 5, 10, 'odd'));
-  console.log(createRandomList(-30, -10, 10, 'even'));
+  console.log(createRandomList(10, 1, 21, 'even'));
+  console.log(createRandomList(10, 1, 21, 'odd'));
+  console.log(createRandomList(10, 1, 21));
+  console.log(createRandomList(10, 25, 5, 'odd'));
+  console.log(createRandomList(10, -30, -10, 'even'));
 }

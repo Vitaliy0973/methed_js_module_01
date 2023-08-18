@@ -1,95 +1,99 @@
 'use strict';
 
 {
-    const getUserData = (text) => {
-        let message = text;
-        let data;
-        while (true) {
-            data = prompt(`${message}: `);
-            if (data === null) {
-                return 'stop';
-            } else if (Number.isNaN(+data)) {
-                message = 'Введи число!'
-                continue;
-            } else if (data === '') {
-                message = 'Введи число!'
-                continue;
-            } else if (Number.isFinite(+data)) {
-                break;
-            }
-        }
-        return +data;
+  const getUserData = (text) => {
+    let message = text;
+    let data;
+    let flag = true;
+    while (flag) {
+      data = prompt(`${message}: `);
+
+      switch (true) {
+        case data === null:
+          return 'stop';
+        case isNaN(data):
+          message = 'Введи число!';
+          break;
+        case data === '':
+          message = 'Введи число!';
+          break;
+        case Number.isFinite(+data):
+          flag = false;
+      }
+    }
+    return +data;
+  }
+
+  const getRandomNumber = (n, m) => {
+    const min = Math.min(n, m);
+    const max = Math.max(n, m);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const getCount = (n, m) => {
+    const min = Math.min(n, m);
+    const max = Math.max(n, m);
+    let count = max - min;
+    if (count >= 50 && count <= 100) {
+      count = 15;
+    } else {
+      count = Math.round(count * 0.3);
+    }
+    return count;
+  }
+
+  const guessNumber = () => {
+    const arrUserNumbers = []
+    let message = 'Введите число';
+    let flag = true;
+
+    let userNumberOne = getUserData('Введите первое число');
+    if (userNumberOne === 'stop') {
+      return;
     }
 
-    const getRandomNumber = (n, m) => {
-        const min = n < m ? n : m;
-        const max = n > m ? n : m;
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    let userNumberTwo = getUserData('Введите второе число');
+    if (userNumberTwo === 'stop') {
+      return;
     }
 
-    const getCount = (n, m) => {
-        const min = n < m ? n : m;
-        const max = n > m ? n : m;
-        let count = max - min;
-        if (count >= 50 && count <= 100) {
-            count = 15;
-        } else {
-            count = Math.round(count * 0.3);
-        }
-        return count;
+    const num = getRandomNumber(userNumberOne, userNumberTwo);
+    let count = getCount(userNumberOne, userNumberTwo);
+
+    while (flag) {
+      let userNumber = getUserData(message);
+
+      if (userNumber === 'stop') {
+        flag = false;
+      }
+
+      if (arrUserNumbers.includes(userNumber)) {
+        message = 'Это число вы уже вводили! Введите другое число';
+        continue;
+      }
+
+      arrUserNumbers.push(userNumber);
+
+      switch (true) {
+        case userNumber === num:
+          alert('Правильно!!');
+          flag = false;
+          break;
+        case count === 0:
+          alert('Вы проиграли!!');
+          flag = false;
+          break;
+        case userNumber > num:
+          message = 'Меньше! Введите число';
+          count--;
+          break;
+        case userNumber < num:
+          message = 'Больше! Введите число';
+          count--;
+          break;
+      }
     }
+  }
 
-    const guessNumber = () => {
-        const arrUserNumbers = []
-        let message = 'Введите число';
-
-        let userNumberOne = getUserData('Введите первое число');
-        if (userNumberOne === 'stop') {
-            return;
-        }
-
-        let userNumberTwo = getUserData('Введите второе число');
-        if (userNumberTwo === 'stop') {
-            return;
-        }
-
-        const num = getRandomNumber(userNumberOne, userNumberTwo);
-        let count = getCount(userNumberOne, userNumberTwo);
-
-        console.log('num: ', num);
-
-        while (true) {
-            let userNumber = getUserData(message);
-
-            if (userNumber === 'stop') {
-                break;
-            }
-
-            if (arrUserNumbers.includes(userNumber)) {
-                message = 'Это число вы уже вводили! Введите другое число';
-                continue;
-            }
-
-            arrUserNumbers.push(userNumber);
-
-            console.log('count: ', count);
-            console.log('arrUserNumbers: ', arrUserNumbers);
-
-            if (userNumber === num) {
-                alert('Правильно!!');
-                break;
-            } else if (count === 0) {
-                alert('Вы проиграли!!');
-                break;
-            } else if (userNumber > num) {
-                count--;
-                message = 'Меньше! Введите число';
-            } else if (userNumber < num) {
-                count--;
-                message = 'Больше! Введите число';
-            }
-        }
-    }
-
-    guessNumber();
+  guessNumber();
 }

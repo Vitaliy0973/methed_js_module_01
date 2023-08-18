@@ -10,22 +10,33 @@
   }
 
   const guessNumber = () => {
+    let message = 'Введите число';
+    let userNumber = '';
+    let flag = true;
     const num = getRandomNumber();
 
-    let userNumber = getUserData('Введите число');
+    while (flag) {
+      userNumber = getUserData(message);
 
-    while (true) {
-      if (userNumber === null) {
-        break;
-      } else if (Number.isNaN(+userNumber)) {
-        userNumber = getUserData('Введи число!');
-      } else if (+userNumber === num) {
-        alert('Правильно!!');
-        break;
-      } else if (+userNumber > num) {
-        userNumber = getUserData('Меньше! Введите число');
-      } else if (+userNumber < num) {
-        userNumber = getUserData('Больше! Введите число');
+      switch (true) {
+        case userNumber === null:
+          flag = false;
+          break;
+        case isNaN(userNumber):
+          message = 'Введи число!';
+          break;
+        case userNumber === '':
+          message = 'Введи число!';
+          break;
+        case +userNumber > num:
+          message = 'Меньше! Введите число';
+          break;
+        case +userNumber < num:
+          message = 'Больше! Введите число';
+          break;
+        case +userNumber === num:
+          alert('Правильно!!');
+          flag = false;
       }
     }
   }
