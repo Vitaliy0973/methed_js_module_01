@@ -5,11 +5,26 @@
 
   const game = (message, num) => {
     const userNumber = prompt(`${message} `);
-    if (userNumber === null) return alert('Игра окончена!');
-    if (isNaN(userNumber) || userNumber === '') game('Введи число!', num);
-    if (+userNumber > num) game('Меньше! Введите число', num);
-    if (+userNumber < num) game('Больше! Введите число', num);
-    if (+userNumber === num) return alert('Правильно!!');
+
+    switch (true) {
+      case userNumber === null:
+        alert('Игра окончена!');
+        return;
+      case isNaN(userNumber):
+      case userNumber.trim() === '':
+        message = 'Введи число!';
+        break;
+      case +userNumber > num:
+        message = 'Меньше! Введите число';
+        break;
+      case +userNumber < num:
+        message = 'Больше! Введите число';
+        break;
+      default:
+        alert('Правильно!!');
+        return;
+    }
+    game(message, num);
   };
 
   const guessNumber = () => {
@@ -17,7 +32,9 @@
     const num = getRandomNumber();
 
     game(message, num);
+
+    return num;
   };
 
-  guessNumber();
+  console.log(guessNumber());
 }

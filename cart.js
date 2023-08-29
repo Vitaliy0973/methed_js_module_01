@@ -3,9 +3,9 @@
 const cart = {
   items: [],
   count: 0,
-  discount: 0,
+  _discount: 0,
   add(name, price, count) {
-    this.items.push({name, price, count});
+    this.items.push({ name, price, count });
     this.increaseCount(count);
   },
   increaseCount(num) {
@@ -14,15 +14,15 @@ const cart = {
   calculateItemPrice() {
     const totalPrice = this.items.reduce((sum, item) =>
       sum + (item.price * item.count), 0);
-    if (this.discount > 0) {
-      return totalPrice - (totalPrice * this.discount / 100);
+    if (this._discount > 0) {
+      return totalPrice - (totalPrice * this._discount / 100);
     }
     return totalPrice;
   },
   clear() {
     this.items = [];
     this.count = 0;
-    this.discount = 0;
+    this._discount = 0;
   },
   print() {
     console.log(JSON.stringify(this.items));
@@ -31,9 +31,9 @@ const cart = {
   get totalPrice() {
     return this.calculateItemPrice();
   },
-  set setDiscount(promocode) {
-    if (promocode === 'METHED') this.discount = 15;
-    if (promocode === 'NEWYEAR') this.discount = 21;
+  set discount(promocode) {
+    if (promocode === 'METHED') this._discount = 15;
+    if (promocode === 'NEWYEAR') this._discount = 21;
   },
 };
 
@@ -42,6 +42,6 @@ cart.add('sony', 11500, 3);
 cart.add('samsung', 25090, 2);
 cart.add('xiaomi', 3450, 9);
 
-// cart.setDiscount = 'METHED';
-cart.setDiscount = 'NEWYEAR';
+// cart.discount = 'METHED';
+cart.discount = 'NEWYEAR';
 cart.print();
