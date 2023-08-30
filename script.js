@@ -1,4 +1,4 @@
 'use strict';
 
-const game = window.RPS();
-game();
+const startGame = window.RPS('EN');
+startGame();
