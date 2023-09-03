@@ -2,14 +2,27 @@
 
 (() => {
   const startRSP = window.RSP();
-  const BALL = {
+  const GAME_DATA = {
     userCountBall: 5,
     botCountBall: 5,
     playerOne: 'Игрок',
     playerTwo: 'Бот',
 
+    correctCount() {
+      if (this.userCountBall > 10) {
+        this.userCountBall = 10;
+        this.botCountBall = 0;
+      }
+
+      if (this.botCountBall > 10) {
+        this.userCountBall = 0;
+        this.botCountBall = 10;
+      }
+    },
+
     changeCount(ballCount, compAsk) {
       const signMultiplier = this.playerOne === 'Бот' ? 1 : -1;
+
       if (ballCount % 2 === compAsk) {
         this.botCountBall -= ballCount * signMultiplier;
         this.userCountBall += ballCount * signMultiplier;
@@ -17,6 +30,8 @@
         this.botCountBall += ballCount * signMultiplier;
         this.userCountBall -= ballCount * signMultiplier;
       }
+
+      this.correctCount();
     },
 
     reset() {
@@ -60,37 +75,41 @@
       }
 
       if (!Number.isNaN(parseFloat(userNum)) && isFinite(userNum)) {
-        if (userNum > BALL.userCountBall) {
+        if (userNum > GAME_DATA.userCountBall) {
           alert('Нельзя загадывать больше шариков, чем у тебя есть.');
         } else if (userNum < 1) {
           alert('Вы должны загадать минимум 1 шарик.');
         } else {
           return +userNum;
         }
+      } else {
+        alert('Введите число!');
       }
 
-      alert('Введите число!');
       return checkCorrectNumber();
     };
 
     const whoseMove = (move) => {
       if (move === null) {
         return [null, null];
-      } else if (move % 2 === 0) {
-        const playerOne = checkCorrectNumber();
-        const playerTwo = getRandomIntInclusive(0, 1);
-        BALL.whoPlayerOne = 'Игрок';
-        BALL.whoPlayerTwo = 'Бот';
+      }
 
-        return [playerOne, playerTwo];
-      } else {
-        const playerOne = getRandomIntInclusive(1, BALL.botCountBall);
-        const playerTwo = +(!confirm('Число четное?'));
-        BALL.whoPlayerOne = 'Бот';
-        BALL.whoPlayerTwo = 'Игрок';
+      if (move % 2 === 0) {
+        const playerOne = checkCorrectNumber();
+        const playerTwo = GAME_DATA.userCountBall === 1 ? 1 :
+          getRandomIntInclusive(0, 1);
+        GAME_DATA.whoPlayerOne = 'Игрок';
+        GAME_DATA.whoPlayerTwo = 'Бот';
 
         return [playerOne, playerTwo];
       }
+
+      const playerOne = getRandomIntInclusive(1, GAME_DATA.botCountBall);
+      const playerTwo = +(!confirm('Число четное?'));
+      GAME_DATA.whoPlayerOne = 'Бот';
+      GAME_DATA.whoPlayerTwo = 'Игрок';
+
+      return [playerOne, playerTwo];
     };
 
     return function start(move = 0) {
@@ -101,24 +120,24 @@
           return null;
         }
 
-        BALL.changeCount(playerOne, playerTwo);
+        GAME_DATA.changeCount(playerOne, playerTwo);
 
         switch (true) {
-          case BALL.userCountBall <= 0:
-          case BALL.userCountBall >= 10:
-            alert(BALL.whoWinner);
+          case GAME_DATA.userCountBall <= 0:
+          case GAME_DATA.userCountBall >= 10:
+            alert(GAME_DATA.whoWinner);
 
             if (confirm('Хотите сыграть еще?')) {
-              BALL.reset();
+              GAME_DATA.reset();
               return 1;
             }
             return null;
 
           case playerOne % 2 === playerTwo:
-            alert(`${BALL.playerTwo} угадал!\n\n${BALL.getCount}`);
+            alert(`${GAME_DATA.playerTwo} угадал!\n\n${GAME_DATA.getCount}`);
             break;
           default:
-            alert(`${BALL.playerTwo} ошибся!\n\n${BALL.getCount}`);
+            alert(`${GAME_DATA.playerTwo} ошибся!\n\n${GAME_DATA.getCount}`);
         }
 
         return play(++move);
